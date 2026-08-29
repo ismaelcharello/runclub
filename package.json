@@ -3,6 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "check": "node --check api/exercises.js && node --check api/exercise-gif.js"
+    "check": "node --check app.js && node --check api/exercises.js && node --check api/exercise-gif.js && node --check lib/exercise-media-provider.js"
   }
 }

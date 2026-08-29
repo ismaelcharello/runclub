@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.workoutxapp.com/v1';
+const { createWorkoutXProvider } = require('../lib/exercise-media-provider');
 
 module.exports = async (request, response) => {
   if (request.method !== 'GET') {
@@ -10,12 +10,10 @@ module.exports = async (request, response) => {
   if (!process.env.WORKOUTX_API_KEY) return response.status(503).json({ error: 'WORKOUTX_NOT_CONFIGURED' });
 
   try {
-    const detail = await fetch(`${API_BASE}/exercises/${encodeURIComponent(id)}`, {
-      headers: { 'X-WorkoutX-Key': process.env.WORKOUTX_API_KEY, Accept: 'application/json' }
-    });
+    const provider = createWorkoutXProvider({ apiKey: process.env.WORKOUTX_API_KEY });
+    const { response: detail, exercise } = await provider.getExercise(id);
     if (!detail.ok) return response.status(502).json({ error: 'GIF indisponível.' });
-    const exercise = await detail.json();
-    const gifUrl = exercise.gifUrl ?? exercise.data?.gifUrl;
+    const gifUrl = exercise?.gifUrl;
     if (!gifUrl || !String(gifUrl).startsWith('https://')) return response.status(404).json({ error: 'Este exercício não possui GIF demonstrativo.' });
     const media = await fetch(gifUrl, { headers: { 'X-WorkoutX-Key': process.env.WORKOUTX_API_KEY } });
     if (!media.ok) return response.status(502).json({ error: 'Não foi possível carregar a demonstração.' });

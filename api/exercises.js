@@ -1,23 +1,4 @@
-const API_BASE = 'https://api.workoutxapp.com/v1';
-
-function asList(body) {
-  if (Array.isArray(body)) return body;
-  if (Array.isArray(body?.data)) return body.data;
-  if (Array.isArray(body?.exercises)) return body.exercises;
-  return [];
-}
-
-function normalize(exercise) {
-  return {
-    id: String(exercise.id ?? exercise.exerciseId ?? ''),
-    name: exercise.name ?? exercise.title ?? 'Movimento sem nome',
-    bodyPart: exercise.bodyPart ?? exercise.bodypart ?? null,
-    target: exercise.target ?? exercise.primaryMuscles?.[0] ?? null,
-    equipment: exercise.equipment ?? null,
-    difficulty: exercise.difficulty ?? exercise.effortLevel ?? null,
-    instructions: exercise.instructions ?? exercise.steps ?? []
-  };
-}
+const { createWorkoutXProvider } = require('../lib/exercise-media-provider');
 
 module.exports = async (request, response) => {
   if (request.method !== 'GET') {
@@ -32,15 +13,13 @@ module.exports = async (request, response) => {
   }
 
   try {
-    const upstream = await fetch(`${API_BASE}/exercises?name=${encodeURIComponent(query)}&limit=16`, {
-      headers: { 'X-WorkoutX-Key': process.env.WORKOUTX_API_KEY, Accept: 'application/json' }
-    });
+    const provider = createWorkoutXProvider({ apiKey: process.env.WORKOUTX_API_KEY });
+    const { response: upstream, exercises } = await provider.searchExercises({ query });
     if (upstream.status === 429) return response.status(429).json({ error: 'LIMIT_REACHED', message: 'Limite temporário da biblioteca atingido. Tente novamente em instantes.' });
     if (upstream.status === 401 || upstream.status === 403) return response.status(502).json({ error: 'PROVIDER_ACCESS', message: 'A chave da WorkoutX não permite esta consulta.' });
     if (!upstream.ok) return response.status(502).json({ error: 'PROVIDER_ERROR', message: 'A biblioteca está indisponível agora.' });
-    const body = await upstream.json();
     response.setHeader('Cache-Control', 'private, max-age=300');
-    return response.status(200).json({ exercises: asList(body).map(normalize).filter((item) => item.id) });
+    return response.status(200).json({ exercises });
   } catch {
     return response.status(502).json({ error: 'PROVIDER_UNAVAILABLE', message: 'Não foi possível consultar a WorkoutX agora.' });
   }
