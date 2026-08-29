@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f05a1a" />
+    <title>Pace Orbit — Gestão de corrida</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#inicio"><span class="brand-mark">P</span><span>Pace <b>Orbit</b></span></a>
+      <p class="side-label">CENTRAL</p>
+      <nav>
+        <button class="nav-item active" data-view="inicio">Visão geral</button>
+        <button class="nav-item" data-view="atletas">Atletas</button>
+        <button class="nav-item" data-view="treinos">Planejamento</button>
+        <button class="nav-item" data-view="movimentos">Movimentos <span class="new">NOVO</span></button>
+        <button class="nav-item" data-view="rotinas">Rotinas</button>
+        <button class="nav-item" data-view="eventos">Eventos</button>
+        <button class="nav-item" data-view="comunidade">Comunidade</button>
+      </nav>
+      <div class="sidebar-footer"><span class="avatar">NL</span><span><b>Next Level Run Club</b><small>Coordenação</small></span></div>
+    </aside>
+    <main>
+      <header><div><p class="eyebrow" id="eyebrow">PAINEL DA ASSESSORIA</p><h1 id="page-title">Bom dia, Next Level.</h1></div><button class="outline" id="open-library">Biblioteca de movimentos</button></header>
+
+      <section id="inicio" class="view active-view">
+        <div class="hero"><div><span class="pill">Pace Orbit</span><h2>Treinos, presença e evolução em um só lugar.</h2><p>Organize a jornada da sua assessoria — do aquecimento ao feedback após a corrida.</p></div><button class="primary" data-goto="treinos">Criar planejamento</button></div>
+        <div class="metrics"><article><b>0</b><span>Atletas ativos</span></article><article><b>0</b><span>Treinos desta semana</span></article><article><b>0</b><span>Rotinas concluídas</span></article></div>
+        <section class="panel"><div class="panel-title"><div><p class="eyebrow">PRÓXIMO PASSO</p><h3>Comece criando uma rotina de preparação.</h3></div><button class="text-button" data-goto="movimentos">Ver movimentos →</button></div><p class="muted">A biblioteca exibe apenas conteúdos retornados pela integração real da WorkoutX e revisados por você antes de irem para os atletas.</p></section>
+      </section>
+
+      <section id="movimentos" class="view">
+        <div class="section-heading"><div><p class="eyebrow">BIBLIOTECA PREMIUM</p><h2>Movimentos</h2><p>Pesquise exercícios, assista ao GIF demonstrativo e envie para curadoria.</p></div><span class="provider">WORKOUTX · FREE</span></div>
+        <div class="notice"><b>Uso seguro:</b> execute apenas movimentos indicados pelo treinador. Interrompa se sentir dor ou mal-estar.</div>
+        <form class="search-box" id="exercise-search"><input id="search-input" aria-label="Buscar movimento" placeholder="Ex.: squat, lunge, glute bridge" minlength="2" required /><button class="primary" type="submit">Buscar</button></form>
+        <p class="search-help">A busca só consome a API quando você pesquisar. Os GIFs gratuitos podem conter marca d’água do provedor.</p>
+        <div id="search-status" class="status">Busque um movimento para começar.</div><div id="results" class="exercise-grid"></div>
+      </section>
+
+      <section id="rotinas" class="view"><div class="section-heading"><div><p class="eyebrow">PREPARAÇÃO PARA O TREINO</p><h2>Rotinas guiadas</h2><p>Monte sequências de aquecimento, técnica, recuperação ou finalização.</p></div></div><div class="two-col"><section class="panel"><h3>Novo rascunho</h3><label>Nome da rotina<input id="routine-name" placeholder="Ex.: Aquecimento rápido" /></label><label>Objetivo<select id="routine-type"><option>Aquecimento dinâmico</option><option>Mobilidade</option><option>Ativação</option><option>Finalização</option></select></label><button class="primary" id="save-routine">Salvar rascunho local</button><p class="helper">A atribuição a atletas será habilitada depois que a base de contas for conectada.</p></section><section class="panel"><h3>Seus rascunhos</h3><div id="routine-list" class="empty">Nenhuma rotina salva neste dispositivo.</div></section></div></section>
+
+      <section id="treinos" class="view"><div class="section-heading"><div><p class="eyebrow">PLANEJAMENTO</p><h2>Treinos</h2><p>Estruture o treino em preparação, principal, finalização e feedback.</p></div></div><div class="workflow"><article><b>1</b><div><h3>Preparação</h3><p>Vincule uma rotina guiada antes da corrida.</p></div><button data-goto="rotinas" class="text-button">Montar rotina</button></article><article><b>2</b><div><h3>Treino principal</h3><p>Cadastre corrida, ritmo, distância e observações.</p></div></article><article><b>3</b><div><h3>Finalização</h3><p>Oriente mobilidade, alongamento ou recuperação.</p></div></article><article><b>4</b><div><h3>Feedback</h3><p>Atleta informa esforço, dificuldade e desconforto.</p></div></article></div></section>
+      <section id="atletas" class="view"><div class="section-heading"><p class="eyebrow">ATLETAS</p><h2>Gestão de atletas</h2><p>Ainda não há atletas cadastrados nesta nova base.</p></div></section>
+      <section id="eventos" class="view"><div class="section-heading"><p class="eyebrow">EVENTOS</p><h2>Agenda da assessoria</h2><p>Eventos e inscritos serão conectados novamente nesta reconstrução.</p></div></section>
+      <section id="comunidade" class="view"><div class="section-heading"><p class="eyebrow">COMUNIDADE</p><h2>Comunidade</h2><p>Compartilhe orientações e acompanhe o grupo.</p></div></section>
+    </main>
+    <dialog id="exercise-dialog"><button class="close" aria-label="Fechar">×</button><div id="exercise-detail"></div></dialog>
+    <script src="/app.js"></script>
+  </body>
+</html>
